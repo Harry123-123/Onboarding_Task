@@ -100,3 +100,22 @@ WHERE pr.Id= o.PropertyId
 AND o.OwnerId=1426
 )
 
+SELECT p.Name 'PropertyName',
+CONCAT( Person.FirstName, ' ' , Person.LastNAme) AS CurrentOwner,
+CONCAT (A.Number,' ' , A.Suburb, ' ' , A.City, ' ' , A.PostCode) 'Property address' ,
+CONCAT (p.Bedroom,' ' , 'Bedroom  ,  ' , p.Bathroom, ' ' , 'Bathroom')'Property Details',
+PRP.Amount 'Rent',
+RentFrequency = ( case when tpf.id=1 THEN 'Per week'
+WHEN tpf.id=2 THEN 'Per Fortnight'
+WHEN tpf.id=3 THEN 'Per Month'
+END ),
+
+PE.Description 'Expense' , PE.Amount 'ExpenseAmount ' , PE.Date 'ExpenseDate'
+FROM Property p, Address A , PropertyRentalPayment PRP, Ownerproperty OP ,Person, PropertyExpense PE, TenantPaymentFrequencies TPF
+WHERE p.Name= 'Property A'
+and p.AddressId= a.AddressID
+and PRP.PropertyID=p.Id
+and op.PropertyID=p.Id
+and op.OwnerID=person.Id
+and pe.PropertyId=p.Id
+and PRP.FrequencyType=tpf.Id;
