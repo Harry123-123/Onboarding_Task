@@ -1,9 +1,16 @@
+
+--Property Analysis BI Developer - On-boarding Task
+--Name- Harkirat Singh
+
+
+--1a Display a list of all property names and their property id’s for Owner Id: 1426. 
 SELECT Ownerid,PropertyId, name
 FROM OwnerProperty
 Inner join Property 
 ON Ownerproperty.PropertyId = Property.id
 WHERE Ownerid = 1426
 
+--1b Display the current home value for each property in question a). 
 SELECT p.Name AS PropertyName, op.OwnerID AS OwnerId, v.Value AS PropertyValue
 FROM dbo.OwnerProperty AS op
 INNER JOIN dbo.Property AS p on op.PropertyId = p.id
@@ -11,6 +18,8 @@ INNER JOIN dbo.PropertyHomeValue AS v on v.PropertyId = p.Id
 WHERE op.OwnerId=1426
 AND v.IsActive =1
 
+--1c For each property in question a), return the following:                                                                      
+--1 Using rental payment amount, rental payment frequency, tenant start date and tenant end date to write a query that returns the sum of all payments from start date to end date. 
 
 SELECT  tp.PropertyID, op.OwnerID, p.Name,
 ( CASE 
@@ -31,6 +40,7 @@ LEFT JOIN Property AS P ON TP.PropertyId= p.ID
 LEFT JOIN OwnerProperty AS op ON p.Id = op.PropertyId
 WHERE op.OwnerId= 1426
 
+--1c 2 Display the yield. 
 
 SELECT 
 	tp.PropertyId,op.OwnerId,p.Name as 'Property_Name',
@@ -68,13 +78,14 @@ FROM
 WHERE op.OwnerId=1426
 AND phv.IsActive=1;
 
-
+--1d Display all the jobs available
 SELECT j.PropertyId,jm.JobId, j.JobDescription AS Curently_available_job_Description, j.PaymentAmount
 FROM Job as j
 LEFT JOIN JobMedia as jm
 ON j.PropertyId= jm.PropertyId
 WHERE JobStatusId=1;
 
+--1e Display all property names, current tenants first and last names and rental payments per week/ fortnight/month for the properties in question a). 
 
 SELECT  tp.PaymentAmount, pr.Name AS PropertyName, concat (pn.FirstName,'',pn.MiddleName,'',pn.LastName) AS Person_Name,
 ( CASE 
@@ -99,6 +110,8 @@ FROM Property p, [dbo].[OwnerProperty] o
 WHERE pr.Id= o.PropertyId
 AND o.OwnerId=1426
 )
+
+--2 Use Report Builder or Visual Studio (SSRS) to develop the following report:
 
 SELECT p.Name 'PropertyName',
 CONCAT( Person.FirstName, ' ' , Person.LastNAme) AS CurrentOwner,
